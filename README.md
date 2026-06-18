@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Course Platform
 
-## Getting Started
+Plataforma de cursos online desenvolvida com Next.js, TypeScript, Prisma e PostgreSQL (Supabase).
 
-First, run the development server:
+## Sobre o Projeto
+
+O objetivo deste projeto é fornecer uma plataforma completa para disponibilização e gerenciamento de cursos online, incluindo autenticação de usuários, controle de acesso por perfil, gerenciamento de matrículas e integração com provedores de pagamento.
+
+A plataforma está sendo construída com foco em escalabilidade, segurança e boas práticas de desenvolvimento de software.
+
+## Tecnologias Utilizadas
+
+* Next.js
+* TypeScript
+* Prisma ORM
+* PostgreSQL
+* Supabase
+* Auth.js (planejado)
+* Kiwify Webhooks (planejado)
+
+## Funcionalidades
+
+### Implementadas
+
+* Estrutura inicial do projeto
+* Integração com PostgreSQL via Supabase
+* ORM Prisma configurado
+* CRUD básico de usuários
+* Arquitetura baseada em Services, Repositories e DTOs
+
+### Em Desenvolvimento
+
+* Autenticação e autorização
+* Controle de permissões por perfil (Admin, Instructor e User)
+* Área do aluno
+* Área administrativa
+* Gerenciamento de cursos
+* Gerenciamento de aulas
+* Matrículas automáticas
+* Integração com Kiwify
+* Envio de e-mails automáticos
+* Recuperação de senha
+
+## Arquitetura
+
+```text
+Route
+ ↓
+Service
+ ↓
+Repository
+ ↓
+Prisma
+ ↓
+PostgreSQL (Supabase)
+```
+
+## Estrutura do Projeto
+
+```text
+app/
+├── api/
+
+lib/
+├── prisma.ts
+
+mappers/
+
+repository/
+
+service/
+
+types/
+
+prisma/
+```
+
+## Configuração do Ambiente
+
+Clone o repositório:
+
+```bash
+git clone <repository-url>
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Configure as variáveis de ambiente:
+
+```env
+DATABASE_URL=
+```
+
+Execute as migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+Inicie a aplicação:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Roadmap
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* [ ] Sistema de autenticação
+* [ ] Área do aluno
+* [ ] Área administrativa
+* [ ] Cadastro de cursos
+* [ ] Upload de conteúdo
+* [ ] Integração com Kiwify
+* [ ] Sistema de matrículas
+* [ ] Sistema de notificações por e-mail
+* [ ] Dashboard de métricas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Licença
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Este projeto está em desenvolvimento.
