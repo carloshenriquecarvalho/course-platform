@@ -8,3 +8,10 @@ export interface UserResponseDTO {
     id: string,
     name: string
 }
+
+export interface AttachmentRequest{
+    filePath: string,
+    lessonId: string,
+    fileName: string,
+    fileSize?: number
+}
