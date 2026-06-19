@@ -1,3 +1,5 @@
+import { CourseStatus } from "@/app/generated/prisma"
+
 export interface UserRequestDTO {
     name: string,
     email: string,
@@ -26,7 +28,6 @@ export interface LessonRequestDTO {
     moduleId: string
 }
 
-
 export interface LessonUpdateRequestDTO {
     id?: string,
     title?: string,
@@ -48,3 +49,15 @@ export interface ModuleUpdateRequestDTO {
     order?: number,
     courseId?: string
 } 
+
+export interface CourseRequestDTO {
+    title: string,
+    description: string,
+    instructorId: string
+}
+
+export interface CourseUpdateRequestDTO {
+    title?: string,
+    description?: string,
+    status?: CourseStatus
+}

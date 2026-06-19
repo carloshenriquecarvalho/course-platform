@@ -27,7 +27,7 @@ export async function DELETE(request: Request){
 
 export async function PATCH(request: Request){
     const body = await request.json();
-    const updatedModule = moduleService.updateModule(body);
+    const updatedModule = await moduleService.updateModule(body);
 
     return Response.json(updatedModule);
 }
