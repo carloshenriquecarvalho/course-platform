@@ -15,3 +15,23 @@ export interface AttachmentRequest{
     fileName: string,
     fileSize?: number
 }
+
+export interface LessonRequestDTO {
+    id?: string,
+    title: string,
+    description?: string,
+    videoPath?: string,
+    duration?: number,
+    order: number,
+    moduleId: string
+}
+
+
+export interface LessonUpdateRequestDTO {
+    id?: string,
+    title?: string,
+    description?: string,
+    videoPath?: string,
+    duration?: number,
+    order?: number,
+}
