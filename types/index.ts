@@ -35,3 +35,16 @@ export interface LessonUpdateRequestDTO {
     duration?: number,
     order?: number,
 }
+
+export interface ModuleRequestDTO {
+    title: string,
+    order: number,
+    courseId: string
+}
+
+export interface ModuleUpdateRequestDTO {
+    id: string,
+    title?: string,
+    order?: number,
+    courseId?: string
+} 
