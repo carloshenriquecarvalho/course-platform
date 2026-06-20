@@ -35,4 +35,10 @@ export class CourseRepository{
     async delete(id: string){
         return prisma.course.delete({where: {id}})
     }
+
+    async findById(courseId: string){
+        return prisma.course.findUnique({
+            where: {id: courseId}
+        })
+    }
 }
