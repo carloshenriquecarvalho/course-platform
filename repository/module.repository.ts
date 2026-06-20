@@ -3,9 +3,7 @@ import { ModuleRequestDTO, ModuleUpdateRequestDTO } from "@/types";
 
 export class ModuleRepository {
     async create(data: ModuleRequestDTO){
-        return prisma.module.create({
-            data
-        });
+        return prisma.module.create({data});
     }
 
     async getAll(){

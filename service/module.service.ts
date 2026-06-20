@@ -5,7 +5,7 @@ export class ModuleService {
     private moduleRepository = new ModuleRepository();
     constructor(){}
 
-    async createModule(data: ModuleRequestDTO){
+    async createModule(data: ModuleRequestDTO,){
         const moduleRequest = await this.moduleRepository.create(data);
 
         return moduleRequest;

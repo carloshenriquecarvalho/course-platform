@@ -20,13 +20,31 @@ export async function POST(request: Request){
     return Response.json(createdCourse);
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+    const user = await getAuthenticatedUser(request);
+
+    if(user.role !== "ADMIN" && user.role !== "INSTRUCTOR") {
+        return Response.json(
+            { message: "Forbidden" },
+            { status: 403 }
+        )
+    }
+
     const courses = await courseService.getAllCourses();
 
     return Response.json(courses);
 }
 
 export async function PATCH(request: Request) {
+    const user = await getAuthenticatedUser(request);
+
+    if(user.role !== "ADMIN" && user.role !== "INSTRUCTOR") {
+        return Response.json(
+            { message: "Forbidden" },
+            { status: 403 }
+        )
+    }
+
     const body = await request.json();
     const id = body.id;
     const updatedCourse = await courseService.updateCourse(id, body);
@@ -35,6 +53,15 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request){
+    const user = await getAuthenticatedUser(request);
+
+    if(user.role !== "ADMIN" && user.role !== "INSTRUCTOR") {
+        return Response.json(
+            { message: "Forbidden" },
+            { status: 403 }
+        )
+    }
+
     const body = await request.json();
     const id = body.id;
     const deletedCourse = await courseService.deleteCourse(id);

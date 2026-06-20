@@ -11,7 +11,7 @@ export class CourseRepository{
             data:{ 
                 title: data.title,
                 status: CourseStatus.DRAFT,
-                description: data.description,
+                description: data.description, 
                 instructorId: userId
             }});
 
