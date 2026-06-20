@@ -38,4 +38,10 @@ export class LessonRepository {
             data
         });
     }
+
+    async finById(id: string) {
+        return await prisma.lesson.findUnique({
+            where: {id}
+        })
+    }
 }

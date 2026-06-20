@@ -1,5 +1,8 @@
 import { AttachmentRepository } from "@/repository/attachement.repository";
 import { StorageService } from "./storage.service";
+import { TokenPayload } from "@/types";
+import { requireRole } from "@/lib/authorization";
+import { NotFoundError } from "@/errors/notfound";
 
 export class AttachmentService {
     private attachmentRepository: AttachmentRepository = new AttachmentRepository();
@@ -8,7 +11,12 @@ export class AttachmentService {
     constructor() {
     }
 
-    async uploadFile(formData: FormData) {
+    async uploadFile(formData: FormData, user: TokenPayload) {
+        requireRole(user, [
+            "ADMIN",
+            "INSTRUCTOR"
+        ]);
+
         const file = formData.get("file") as File;
         if (!(file instanceof File)) {
             throw new Error("Arquivo não enviado");
@@ -35,11 +43,26 @@ export class AttachmentService {
 
     }
 
-    async getAll(){
+    async getAll(user: TokenPayload){
+        requireRole(user, [
+            "ADMIN",
+            "INSTRUCTOR"
+        ]);
+
         return this.attachmentRepository.get();
     }
 
-    async deleteAttachment(id: string){
+    async deleteAttachment(id: string, user: TokenPayload){
+        requireRole(user, [
+            "ADMIN",
+            "INSTRUCTOR"
+        ]);
+
+        const existingAttachment = await this.attachmentRepository.findById(id);
+        if(!existingAttachment) {
+            throw new NotFoundError("Anexo não encontrado.")
+        }
+
         return await this.attachmentRepository.delete(id);
     }
 }

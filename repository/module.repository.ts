@@ -22,4 +22,10 @@ export class ModuleRepository {
             data
         });
     }
+
+    async findById(id: string) {
+        return prisma.module.findUnique({
+            where: {id}
+        })
+    }
 }

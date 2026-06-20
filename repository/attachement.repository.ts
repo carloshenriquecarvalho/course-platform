@@ -27,4 +27,10 @@ export class AttachmentRepository {
             }
         });
     }
+
+    async findById(id: string) {
+        return prisma.attachment.findUnique({
+            where: {id}
+        });
+    }
 }

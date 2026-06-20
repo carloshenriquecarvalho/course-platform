@@ -1,9 +1,10 @@
 import { UserRepository } from "@/repository/user.repository";
-import { UserRequestDTO } from "@/types";
+import { TokenPayload, UserRequestDTO } from "@/types";
 import { UserMapper } from "@/mappers/user.mapper";
 import { UserResponseDTO } from "@/types";
 import { User } from "@/app/generated/prisma";
 import bcrypt from "bcryptjs";
+import { requireRole } from "@/lib/authorization";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -27,20 +28,34 @@ export class UserService {
         return userResponse; 
     }
 
-    async getAllUsers(){
+    async getAllUsers(user: TokenPayload){
+        requireRole(user, [
+            "ADMIN",
+            "INSTRUCTOR"
+        ]);
+
         const userList: User[] = await this.userRepository.findAll();
 
         const userResponseList: UserResponseDTO[] = userList.map(n => UserMapper.toResponse(n));
         return userResponseList;
     }
 
-    async updateUser(id: string, data: UserRequestDTO){
-        const user = await this.userRepository.update(id, data);
+    async updateUser(user: TokenPayload, data: UserRequestDTO){
+        requireRole(user, [
+            "ADMIN",
+            "INSTRUCTOR",
+            "USER"
+        ]);
 
-        return UserMapper.toResponse(user);
+        const userUpdated = await this.userRepository.update(user.sub, data);
+
+        return UserMapper.toResponse(userUpdated);
     }
 
-    async deleteUserById(id: string) {
+    async deleteUserById(id: string, user: TokenPayload) {
+        if(id !== user.sub) {
+            requireRole(user, ["ADMIN"]);
+        }
         const userDeleted = await this.userRepository.delete(id);
         return userDeleted;
     }
