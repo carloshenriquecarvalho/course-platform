@@ -2,6 +2,7 @@ import { LoginRepository } from "@/repository/login.repository"
 import { LoginRequestDTO } from "@/types";
 import bcrypt from "bcryptjs";
 import { JWTService } from "@/lib/jwt";
+import { LoginResponseDTO } from "@/types";
 
 export class LoginService {
     private tokenSign = new JWTService();
@@ -19,6 +20,8 @@ export class LoginService {
         if(!passwordValidate){
             throw new Error("Credenciais inválidas");
         }
+
+        const token: LoginResponseDTO = await this.tokenSign.signToken(user.id, user.role);
         
         return await this.tokenSign.signToken(user.id, user.role);
 

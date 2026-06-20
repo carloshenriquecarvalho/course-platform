@@ -1,12 +1,21 @@
 import { CourseService } from "@/service/course.service";
-
+import { getAuthenticatedUser } from "@/lib/auth"
 
 const courseService: CourseService = new CourseService();
 
 export async function POST(request: Request){
+    const user = await getAuthenticatedUser(request);
+
+    if(user.role !== "ADMIN" && user.role !== "INSTRUCTOR") {
+        return Response.json(
+            { message: "Forbidden" },
+            { status: 403 }
+        )
+    }
+
     const body = await request.json();
 
-    const createdCourse = await courseService.createCourse(body);
+    const createdCourse = await courseService.createCourse(body, user.sub);
 
     return Response.json(createdCourse);
 }

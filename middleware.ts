@@ -5,7 +5,8 @@ import { JWTService } from "./lib/jwt";
 const jwtService = new JWTService();
 
 export function middleware(request: NextRequest){
-    const authHeader = request.headers.get("authentication");
+    const authHeader = request.headers.get("authorization");
+
 
     if(!authHeader) {
         return NextResponse.json(

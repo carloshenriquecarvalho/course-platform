@@ -6,13 +6,13 @@ import { CourseUpdateRequestDTO } from "@/types"
 export class CourseRepository{
     constructor(){}
 
-    async create(data: CourseRequestDTO){
+    async create(data: CourseRequestDTO, userId: string){
         return prisma.course.create({
             data:{ 
                 title: data.title,
                 status: CourseStatus.DRAFT,
                 description: data.description,
-                instructorId: data.instructorId
+                instructorId: userId
             }});
 
     }

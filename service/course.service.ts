@@ -7,8 +7,8 @@ export class CourseService{
     constructor(){}
 
 
-    async createCourse(createCourse: CourseRequestDTO){
-        const createdCourse = await this.courseRepository.create(createCourse);
+    async createCourse(createCourse: CourseRequestDTO, userId: string){
+        const createdCourse = await this.courseRepository.create(createCourse, userId);
 
         return createdCourse;
     }
