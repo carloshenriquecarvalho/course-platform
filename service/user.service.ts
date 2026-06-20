@@ -3,6 +3,7 @@ import { UserRequestDTO } from "@/types";
 import { UserMapper } from "@/mappers/user.mapper";
 import { UserResponseDTO } from "@/types";
 import { User } from "@/app/generated/prisma";
+import bcrypt from "bcryptjs";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -15,6 +16,11 @@ export class UserService {
         if(!data.name || !data.email || !data.password) {
             throw new Error("Dados obrigatórios não informados");
         }
+
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+
+        data.password = hashedPassword;
+
         const user = await this.userRepository.create(data);
 
         const userResponse: UserResponseDTO = UserMapper.toResponse(user);

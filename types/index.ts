@@ -61,3 +61,17 @@ export interface CourseUpdateRequestDTO {
     description?: string,
     status?: CourseStatus
 }
+
+export interface LoginRequestDTO {
+    email: string,
+    password: string
+}
+
+export interface LoginResponseDTO {
+    token: string
+}
+
+export interface TokenPayload {
+    sub: string;
+    role: string;
+}
