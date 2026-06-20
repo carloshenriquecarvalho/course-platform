@@ -1,6 +1,8 @@
 import { CourseService } from "@/service/course.service";
 import { getAuthenticatedUser } from "@/lib/auth"
 import { apiHandler } from "@/lib/api-handler";
+import { validate } from "@/lib/data-handler";
+import { createCourseSchema } from "@/schemas/course.schema";
 
 const courseService: CourseService = new CourseService();
 
@@ -9,8 +11,10 @@ export async function POST(request: Request){
         const user = await getAuthenticatedUser(request);
     
         const body = await request.json();
+
+        const validatedData = validate(createCourseSchema, body);
     
-        const createdCourse = await courseService.createCourse(body, user);
+        const createdCourse = await courseService.createCourse(validatedData, user);
     
         return Response.json(createdCourse);
     });
@@ -31,8 +35,10 @@ export async function PATCH(request: Request) {
         const user = await getAuthenticatedUser(request);
     
         const body = await request.json();
+        const validatedData = validate(createCourseSchema, body);
+
         const id = body.id;
-        const updatedCourse = await courseService.updateCourse(id, body, user);
+        const updatedCourse = await courseService.updateCourse(id, validatedData, user);
     
         return Response.json(updatedCourse);
     });
@@ -43,8 +49,8 @@ export async function DELETE(request: Request){
         const user = await getAuthenticatedUser(request);
     
         const body = await request.json();
-        const id = body.id;
-        const deletedCourse = await courseService.deleteCourse(id, user);
+
+        const deletedCourse = await courseService.deleteCourse(body.id, user);
     
         return Response.json(deletedCourse);
     });
