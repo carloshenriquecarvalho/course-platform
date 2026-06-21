@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role{
+  USER
+  ADMIN
+  INSTRUCTOR
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model User {
+  id          String    @id @default(uuid())
+  name        String 
+  email       String    @unique
+  password    String
+  role        Role      @default(USER)
+
+  enrollments Enrollment[]
+
+  coursesCreated Course[] @relation("CourseInstructor")
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Course {
+  id            String    @id @default(uuid())
+  title         String
+  description   String?
+
+  status        CourseStatus  @default(DRAFT)
+
+  instructorId  String
+  instructor    User      @relation("CourseInstructor", fields: [instructorId], references: [id])
+
+  modules       Module[]
+  enrollments   Enrollment[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Enrollment {
+  userId        String
+  courseId      String
+  progress      Float     @default(0)
+
+  enrolledAt    DateTime  @default(now())
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course        Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@id([userId, courseId])
+}
+
+model Module {
+  id            String    @id @default(uuid())
+  title         String
+  lessons       Lesson[]
+  order         Int
+
+  courseId      String
+  course        Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([order, courseId])
+}
+
+
+model Lesson {
+  id            String   @id @default(uuid())
+  title         String
+  description   String?
+  videoPath     String?
+  duration      Int?
+  order         Int
+  
+
+  attachments   Attachment[]
+
+  moduleId      String
+  module        Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([order, moduleId])
+}
+
+model Attachment {
+  id            String   @id @default(uuid())
+
+  fileName      String
+  filePath      String   @unique
+  fileSize      Int?
+  
+  lessonId      String
+  lesson        Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
