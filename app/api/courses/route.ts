@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     return apiHandler(async () => {
         await getAuthenticatedUser(request);
     
-        const courses = await courseService.getAllCourses();
+        const courses = await courseService.findAllCourses();
     
         return Response.json(courses);
     });

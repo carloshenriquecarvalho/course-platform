@@ -41,4 +41,35 @@ export class CourseRepository{
             where: {id: courseId}
         })
     }
+
+    async findCourseAndModulesById(courseId: string) {
+        return prisma.course.findUnique({
+            where: {id: courseId},
+            include: {
+                modules: {
+                    orderBy: {
+                        order: "asc"
+                    },
+                    select: {
+                        id: true,
+                        title: true,
+                        order: true,
+                        lessons: {
+                            orderBy :{
+                                order: "asc"
+                            },
+                            select: {
+                                id: true,
+                                title: true,
+                                description: true,
+                                duration: true,
+                                order: true
+                            }
+                        }
+                        
+                    },
+                },
+            }
+        });
+    }
 }

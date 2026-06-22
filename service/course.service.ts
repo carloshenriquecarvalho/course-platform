@@ -1,12 +1,16 @@
+import { BadRequestError } from "@/errors/badrequest";
 import { ForbiddenError } from "@/errors/forbidden";
 import { NotFoundError } from "@/errors/notfound";
+import { getAuthenticatedUser } from "@/lib/auth";
 import { requireRole } from "@/lib/authorization";
 import { CourseRepository } from "@/repository/course.repository"
+import { EnrollmentRepository } from "@/repository/enrollment.repository";
 import { CourseRequestDTO, TokenPayload } from "@/types";
 import { CourseUpdateRequestDTO } from "@/types"
 
 export class CourseService{
     private courseRepository = new CourseRepository();
+    private enrollmentRepository = new EnrollmentRepository();
     constructor(){}
 
 
@@ -19,7 +23,7 @@ export class CourseService{
         return createdCourse;
     }
 
-    async getAllCourses(){
+    async findAllCourses(){
         const courses = await this.courseRepository.getAll();
 
         return courses;
@@ -61,5 +65,21 @@ export class CourseService{
         const deletedCourse = await this.courseRepository.delete(courseId);
 
         return deletedCourse;
+    }
+
+    async findCourseById(id: string, user: TokenPayload){
+        const existingCourse = await this.courseRepository.findById(id);
+        if(!existingCourse) {
+            throw new NotFoundError("Curso não existe")
+        }
+
+        const userIsEnrolled = await this.enrollmentRepository.findEnrollment(id, user.sub);
+        if(!userIsEnrolled) {
+            throw new ForbiddenError("Você precisa estar matriculado neste curso para acessá-lo");
+        }
+
+        const course = await this.courseRepository.findById(id);
+
+        return course;
     }
 }

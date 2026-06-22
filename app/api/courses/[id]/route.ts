@@ -1,15 +1,16 @@
+import { getAuthenticatedUser } from "@/lib/auth";
+import { apiHandler } from "@/lib/api-handler";
 import { CourseService } from "@/service/course.service";
 
 
 const courseService = new CourseService();
-export async function PATCH(
-    request: Request,
-    { params }: { params: { id: string } }
-) {
-    const body = await request.json();
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }>}) {
+    return apiHandler(async () => {
+        const user = await getAuthenticatedUser(request);
+        const { id } = await params;
 
-    return courseService.updateCourse(
-        params.id,
-        body
-    );
+        const course = await courseService.findCourseById(id, user);
+
+        return Response.json(course);
+    });
 }
