@@ -37,4 +37,8 @@ export class EnrollmentService{
 
         return enrollment;
     }
+    
+    async findEnrolledCoursesByUserId(user: TokenPayload) {
+        return await this.enrollmentRepository.findAllEnrolments(user.sub);
+    }
 }

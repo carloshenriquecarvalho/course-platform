@@ -30,4 +30,24 @@ export class EnrollmentRepository{
             }
         });
     }
+
+    async findAllEnrolments(data: string){
+        return prisma.course.findMany({
+            where: {
+                enrollments: {
+                    some: {
+                        userId: data
+                    }
+                }
+            },
+            include: {
+                instructor: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            }
+        })
+    }
 }
