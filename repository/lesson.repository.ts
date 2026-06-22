@@ -44,4 +44,41 @@ export class LessonRepository {
             where: {id}
         })
     }
-}
+
+    async findLessonAndCourseAndModuleById(lessonId: string){
+        return await prisma.lesson.findUnique({
+            where: {id: lessonId},
+            include: {
+                attachments: true,
+                module: {
+                    include: {
+                        course: {
+                            include: {
+                                instructor: {
+                                    select: {
+                                        id: true,
+                                        name: true
+                                    }
+                                },
+                                modules: {
+                                    orderBy: {
+                                        order: "asc"
+                                },
+                                
+                                include: {
+                                    lessons: {
+                                        orderBy: {
+                                            order: "asc"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+    });
+    
+}}

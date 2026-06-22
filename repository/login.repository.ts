@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 export class LoginRepository {
     async findUser(email: string) {
-        return prisma.user.findUnique({
+        return await prisma.user.findUnique({
             where: {
                 email
             }

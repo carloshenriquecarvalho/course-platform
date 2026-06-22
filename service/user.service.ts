@@ -45,15 +45,16 @@ export class UserService {
     }
 
     async updateUser(user: TokenPayload, data: UserRequestDTO, id: string){
-        requireRole(user, [
-            "ADMIN",
-            "INSTRUCTOR",
-            "USER"
-        ]);
-
-        const userToUpdate = this.userRepository.findById(id);
-        if(!userToUpdate) {
-            throw new NotFoundError("Usuário não encontrado");
+        
+        if(user.sub !== id) {
+            requireRole(user, [
+                "ADMIN"
+            ]);
+            
+            const existingUser = this.userRepository.findById(id);
+            if(!existingUser) {
+                throw new NotFoundError("Usuário não encontrado");
+            }
         }
 
         const userUpdated = await this.userRepository.update(user.sub, data);

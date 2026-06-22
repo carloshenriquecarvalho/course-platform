@@ -42,11 +42,15 @@ export class UserRepository {
 
     async update(
         id: string,
-        data: Partial<UserRequestDTO>
+        data: UserRequestDTO
     ) {
         return prisma.user.update({
             where: { id },
-            data
+            data: {
+                name: data.name,
+                email: data.email,
+                password: data.password
+            }
         });
     }
 

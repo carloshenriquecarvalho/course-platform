@@ -1,7 +1,5 @@
-import { BadRequestError } from "@/errors/badrequest";
 import { ForbiddenError } from "@/errors/forbidden";
 import { NotFoundError } from "@/errors/notfound";
-import { getAuthenticatedUser } from "@/lib/auth";
 import { requireRole } from "@/lib/authorization";
 import { CourseRepository } from "@/repository/course.repository"
 import { EnrollmentRepository } from "@/repository/enrollment.repository";
@@ -78,7 +76,7 @@ export class CourseService{
             throw new ForbiddenError("Você precisa estar matriculado neste curso para acessá-lo");
         }
 
-        const course = await this.courseRepository.findById(id);
+        const course = await this.courseRepository.findCourseAndModulesById(id);
 
         return course;
     }

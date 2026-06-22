@@ -3,28 +3,28 @@ import { ModuleRequestDTO, ModuleUpdateRequestDTO } from "@/types";
 
 export class ModuleRepository {
     async create(data: ModuleRequestDTO){
-        return prisma.module.create({data});
+        return await prisma.module.create({data});
     }
 
     async getAll(){
-        return prisma.module.findMany();
+        return await prisma.module.findMany();
     }
 
     async delete(id: string){
-        return prisma.module.delete({
+        return await prisma.module.delete({
             where: {id}
         })
     }
 
     async update(id: string, data: ModuleUpdateRequestDTO) {
-        return prisma.module.update({
+        return await prisma.module.update({
             where: {id},
             data
         });
     }
 
     async findById(id: string) {
-        return prisma.module.findUnique({
+        return await prisma.module.findUnique({
             where: {id}
         })
     }
