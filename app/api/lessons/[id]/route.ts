@@ -10,6 +10,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
         const lesson = await lessonService.getLessonById(id, user);
 
-        return Response.json(user);
+        return Response.json(lesson);
     });
 }

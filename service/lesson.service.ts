@@ -1,4 +1,5 @@
 import { BadRequestError } from "@/errors/badrequest";
+import { ConflictError } from "@/errors/conflict";
 import { ForbiddenError } from "@/errors/forbidden";
 import { NotFoundError } from "@/errors/notfound";
 import { requireRole } from "@/lib/authorization";
@@ -21,12 +22,16 @@ export class LessonService{
         requireRole(user, [
             "ADMIN",
             "INSTRUCTOR"
-        ])
+        ]);
 
-        if(!data.title || !data.order){
-            throw new Error("Dados obrigatórios não informados")
+        if(!data.title && !data.order){
+            throw new BadRequestError("Dados obrigatórios não informados");
         }
 
+        const existingLesson = await this.lessonRepository.verifyIfSameOrderExists(data.order);
+        if(existingLesson) {
+            throw new ConflictError("A aula não pode ter mesma posição que outra aula")
+        }
         const lesson = await this.lessonRepository.create(data);
 
         return lesson;

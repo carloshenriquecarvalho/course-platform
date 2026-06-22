@@ -14,3 +14,13 @@ export async function POST(request: Request){
         return Response.json(enrollment);
     });
 }
+
+export async function GET(request: Request) {
+    return apiHandler(async () => {
+        const user = await getAuthenticatedUser(request);
+        
+        const enrollments = await enrollmentService.findEnrolledCoursesByUserId(user);
+
+        return Response.json(enrollments);
+    });
+}

@@ -50,7 +50,7 @@ export class UserService {
             requireRole(user, [
                 "ADMIN"
             ]);
-            
+
             const existingUser = this.userRepository.findById(id);
             if(!existingUser) {
                 throw new NotFoundError("Usuário não encontrado");
@@ -67,9 +67,9 @@ export class UserService {
             requireRole(user, ["ADMIN"]);
         }
 
-        const userToDelete = await this.userRepository.findById(id);
+        const existingUser = await this.userRepository.findById(id);
 
-        if(!userToDelete){
+        if(!existingUser){
             throw new NotFoundError("Usuário não encontrado");
         }
 

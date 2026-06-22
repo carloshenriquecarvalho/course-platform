@@ -1,3 +1,4 @@
+import { CourseStatus } from "@/app/generated/prisma";
 import { ForbiddenError } from "@/errors/forbidden";
 import { NotFoundError } from "@/errors/notfound";
 import { requireRole } from "@/lib/authorization";

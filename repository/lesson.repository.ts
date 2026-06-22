@@ -45,6 +45,12 @@ export class LessonRepository {
         })
     }
 
+    async verifyIfSameOrderExists(order: number) {
+        return prisma.lesson.findFirst({
+            where: {order}
+        })
+    }
+
     async findLessonAndCourseAndModuleById(lessonId: string){
         return await prisma.lesson.findUnique({
             where: {id: lessonId},

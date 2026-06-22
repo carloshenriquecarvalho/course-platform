@@ -3,6 +3,7 @@ import { getAuthenticatedUser } from "@/lib/auth"
 import { apiHandler } from "@/lib/api-handler";
 import { validate } from "@/lib/data-handler";
 import { createCourseSchema } from "@/schemas/course.schema";
+import { updateCourseSchema } from "@/schemas/course.schema";
 
 const courseService: CourseService = new CourseService();
 
@@ -35,10 +36,11 @@ export async function PATCH(request: Request) {
         const user = await getAuthenticatedUser(request);
     
         const body = await request.json();
-        const validatedData = validate(createCourseSchema, body);
+        const validatedData = validate(updateCourseSchema, body);
 
         const id = body.id;
         const updatedCourse = await courseService.updateCourse(id, validatedData, user);
+
     
         return Response.json(updatedCourse);
     });

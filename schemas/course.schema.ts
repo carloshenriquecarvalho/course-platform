@@ -1,3 +1,4 @@
+import { CourseStatus } from "@/app/generated/prisma";
 import z from "zod";
 
 export const createCourseSchema = z.object({
@@ -10,3 +11,18 @@ export const createCourseSchema = z.object({
     instructorId: z
         .string()
 })
+
+
+export const updateCourseSchema = z.object({
+    title: z
+        .string()
+        .min(5, "Título deve possuir ao menos 5 caracteres"),
+    description: z
+        .string(),
+    status: z
+        .enum([
+            "DRAFT",
+            "PUBLISHED",
+            "ARCHIVED"
+        ])
+});

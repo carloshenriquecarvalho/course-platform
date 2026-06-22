@@ -17,3 +17,19 @@ export const createLessonSchema = z.object({
         .number(),
 
 });
+
+export const updateLessonSchema = z.object({
+    id: z
+        .string(),
+    title: z
+        .string(),
+    description: z
+        .string(),
+    videoPath: z
+        .string(),
+    duration: z
+        .number(),
+    order: z
+        .number()
+    
+})
