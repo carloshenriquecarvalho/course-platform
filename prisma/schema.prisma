@@ -61,7 +61,7 @@ model Course {
 model Enrollment {
   userId        String
   courseId      String
-  progress      Float     @default(0)
+  progress      Float?     @default(0)
 
   enrolledAt    DateTime  @default(now())
 

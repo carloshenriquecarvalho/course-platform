@@ -5,6 +5,10 @@ import { UserResponseDTO } from "@/types";
 import { User } from "@/app/generated/prisma";
 import bcrypt from "bcryptjs";
 import { requireRole } from "@/lib/authorization";
+import { NotFoundError } from "@/errors/notfound";
+import { BadRequestError } from "@/errors/badrequest";
+import { AdminUserRequestDTO } from "@/types";
+import { ConflictError } from "@/errors/conflict";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -15,7 +19,7 @@ export class UserService {
 
     async createUser(data: UserRequestDTO){
         if(!data.name || !data.email || !data.password) {
-            throw new Error("Dados obrigatórios não informados");
+            throw new BadRequestError("Dados obrigatórios não informados");
         }
 
         const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -40,12 +44,17 @@ export class UserService {
         return userResponseList;
     }
 
-    async updateUser(user: TokenPayload, data: UserRequestDTO){
+    async updateUser(user: TokenPayload, data: UserRequestDTO, id: string){
         requireRole(user, [
             "ADMIN",
             "INSTRUCTOR",
             "USER"
         ]);
+
+        const userToUpdate = this.userRepository.findById(id);
+        if(!userToUpdate) {
+            throw new NotFoundError("Usuário não encontrado");
+        }
 
         const userUpdated = await this.userRepository.update(user.sub, data);
 
@@ -56,7 +65,37 @@ export class UserService {
         if(id !== user.sub) {
             requireRole(user, ["ADMIN"]);
         }
+
+        const userToDelete = await this.userRepository.findById(id);
+
+        if(!userToDelete){
+            throw new NotFoundError("Usuário não encontrado");
+        }
+
         const userDeleted = await this.userRepository.delete(id);
         return userDeleted;
     }
+
+    async adminCreateUser(payload: AdminUserRequestDTO, user: TokenPayload) {
+        if(!payload) {
+            throw new BadRequestError("Dados faltosos para criação de usuário");
+        }
+
+        requireRole(user, [
+            "ADMIN"
+        ]);
+
+        const hashedPassword = await bcrypt.hash(payload.password, 10);
+
+        payload.password = hashedPassword;
+
+        const existingUser = await this.userRepository.findByEmail(payload.email);
+        if(existingUser) {
+            throw new ConflictError("Usuário já existe");
+        }
+
+        const userCreated = await this.userRepository.adminCreate(payload);
+        return userCreated;
+    };
+
 }

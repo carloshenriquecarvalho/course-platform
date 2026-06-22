@@ -49,7 +49,7 @@ export class AttachmentService {
             "INSTRUCTOR"
         ]);
 
-        return this.attachmentRepository.get();
+        return await this.attachmentRepository.get();
     }
 
     async deleteAttachment(id: string, user: TokenPayload){

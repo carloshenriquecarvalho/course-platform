@@ -1,4 +1,4 @@
-import { CourseStatus } from "@/app/generated/prisma"
+import { CourseStatus, Role } from "@/app/generated/prisma"
 
 export interface UserRequestDTO {
     name: string,
@@ -74,4 +74,16 @@ export interface LoginResponseDTO {
 export interface TokenPayload {
     sub: string;
     role: string;
+}
+
+export interface AdminUserRequestDTO {
+    name: string,
+    email: string,
+    password: string,
+    role: Role;
+}
+
+export interface EnrollRequestDTO {
+    courseId: string,
+    userId: string
 }

@@ -53,7 +53,7 @@ export class LessonService{
             "INSTRUCTOR"
         ]);
         
-        const existingLesson = this.lessonRepository.finById(id);
+        const existingLesson = await this.lessonRepository.finById(id);
 
         if(!existingLesson) {
             throw new NotFoundError("Lição não encontrada");

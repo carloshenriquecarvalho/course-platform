@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { UserRequestDTO } from "@/types";
+import { AdminUserRequestDTO, UserRequestDTO } from "@/types";
 import { Role } from "@/app/generated/prisma";
 
 
@@ -34,6 +34,12 @@ export class UserRepository {
         });
     }
 
+    async adminCreate(data: AdminUserRequestDTO) {
+        return prisma.user.create({
+            data
+        })
+    }
+
     async update(
         id: string,
         data: Partial<UserRequestDTO>
@@ -49,4 +55,5 @@ export class UserRepository {
             where: { id }
         });
     }
+
 }
