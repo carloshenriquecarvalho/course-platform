@@ -6,6 +6,7 @@ import { EnrollmentRepository } from "@/repository/enrollment.repository"
 import { EnrollRequestDTO } from "@/types";
 import { ForbiddenError } from "@/errors/forbidden";
 import { ConflictError } from "@/errors/conflict";
+import { UnauthorizedError } from "@/errors/unauthorized";
 
 export class EnrollmentService{
     private courseRepository = new CourseRepository();
@@ -41,4 +42,16 @@ export class EnrollmentService{
     async findEnrolledCoursesByUserId(user: TokenPayload) {
         return await this.enrollmentRepository.findAllEnrolments(user.sub);
     }
+
+    async verifyEnrollment(courseId: string, userId: string) {
+        const verifiedEnroll = await this.enrollmentRepository.findEnrollment(courseId, userId);
+        if(!verifiedEnroll) {
+            throw new UnauthorizedError("Está aula não pode ser concluída sem que esteja matriculado");
+        }
+        return verifiedEnroll;
+    }
+
+    async setProgress(progress: number, enrollmentId: string){
+        return await this.enrollmentRepository.updateProgess(progress, enrollmentId);
+    };
 }

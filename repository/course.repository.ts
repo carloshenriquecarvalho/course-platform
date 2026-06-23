@@ -72,4 +72,18 @@ export class CourseRepository{
             }
         });
     }
+
+    async findCourseWithAllLessons(id: string){
+        return prisma.course.findUnique({
+            where: {id},
+            include: {
+                modules: {
+                    include: {
+                        lessons: true
+                    }
+                }
+            }
+        })
+    }
 }
+

@@ -10,5 +10,5 @@ export async function GET(request: Request){
         const enrolledCourses = await enrollmentService.findEnrolledCoursesByUserId(user);
 
         return Response.json(enrolledCourses);
-    })
+    });
 }

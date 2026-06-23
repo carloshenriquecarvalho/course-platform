@@ -1,4 +1,3 @@
-import { CourseStatus } from "@/app/generated/prisma";
 import z from "zod";
 
 export const createCourseSchema = z.object({

@@ -1,4 +1,3 @@
-import { CourseStatus } from "@/app/generated/prisma";
 import { ForbiddenError } from "@/errors/forbidden";
 import { NotFoundError } from "@/errors/notfound";
 import { requireRole } from "@/lib/authorization";
@@ -14,7 +13,6 @@ export class CourseService{
 
 
     async createCourse(createCourse: CourseRequestDTO, user: TokenPayload){
-
         requireRole(user, ["ADMIN", "INSTRUCTOR"]);
 
         const createdCourse = await this.courseRepository.create(createCourse, user.sub);

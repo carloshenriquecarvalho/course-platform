@@ -50,4 +50,13 @@ export class EnrollmentRepository{
             }
         })
     }
+
+    async updateProgess(progress: number, id: string){
+        return prisma.enrollment.update({
+            where: {id},
+            data: {
+                progress: progress
+            } 
+        })
+    }
 }

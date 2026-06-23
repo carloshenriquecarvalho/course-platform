@@ -60,4 +60,13 @@ export class ModuleService {
         return updatedModule;
     }
 
+    async findModuleById(id: string){
+            const existingModule = await this.moduleRepository.findById(id);
+            if(!existingModule) {
+                throw new NotFoundError("Curso não existe")
+            }
+
+            return existingModule;
+        }
+
 }
