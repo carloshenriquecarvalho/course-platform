@@ -22,12 +22,12 @@ export class LessonProgressService {
     async completeLessonProgress(lessonId: string, user: TokenPayload){
         const lesson = await this.lessonService.getLessonById(lessonId, user);
         if(!lesson) {
-            throw new NotFoundError("Aula não encontrada")
+            throw new NotFoundError("Aula não encontrada");
         }
         const existingModule = await this.moduleService.findModuleById(lesson.moduleId);
         const course = await this.courseService.findCourseById(existingModule.courseId, user);
         if(!course) {
-            throw new NotFoundError("Curso não existente")
+            throw new NotFoundError("Curso não existente");
         }
 
         const existingEnrollment = await this.enrollmentService.verifyEnrollment(course.id, user.sub);
@@ -43,7 +43,7 @@ export class LessonProgressService {
         
         const courseAndLessons = await this.courseRepository.findCourseWithAllLessons(course.id);
         if(!courseAndLessons){
-            throw new NotFoundError("Erro ao encontrar aulas")
+            throw new NotFoundError("Erro ao encontrar aulas");
         }
 
         const totalLessons = courseAndLessons.modules.reduce((acc, module) => acc + module.lessons.length, 0);
