@@ -7,3 +7,11 @@ export interface LoginFormProps {
 
     onSubmit: () => void;
 }
+
+export interface CourseCardProps{
+    id: string,
+    title: string,
+    description: string,
+    instructor: {id: string, name: string},
+    createdAt: Date
+}

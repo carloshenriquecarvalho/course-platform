@@ -17,16 +17,18 @@ export default function LoginForm({email, password, onEmailChange, onPasswordCha
                     className=" flex flex-col items-start w-full gap-2">
                     <label htmlFor="email" >Digie seu email:</label>
                     <input 
-                        className="border w-full"
-                        value={email} onChange={(e) => onEmailChange(e.target.value)} type="email" />
+                        className="border w-full rounded-2xl py-1 px-2 outline-0"
+                        value={email} onChange={(e) => onEmailChange(e.target.value)} type="email" 
+                        required />
 
                     <label htmlFor="password">Digite sua senha:</label>
                     <input
-                        className="border w-full" 
-                        value={password} onChange={(e) => onPasswordChange(e.target.value)} type="password" />
+                        className="border w-full rounded-2xl py-1 px-2 outline-0" 
+                        value={password} onChange={(e) => onPasswordChange(e.target.value)} type="password" 
+                        required />
 
                     <button 
-                        className="bg-amber-500 py-1 px-2 w-full cursor-pointer rounded font-semibold hover:bg-amber-400 duration-400" 
+                        className="bg-amber-500 py-1 px-2 mt-1 w-full cursor-pointer rounded font-semibold hover:bg-amber-400 duration-400 text-black" 
                         type="submit">Entrar
                     </button>
                 </div>
