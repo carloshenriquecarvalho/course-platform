@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import Link from "next/link"
 
 export function CardImage({id, title, description, instructor, createdAt}: CourseCardProps) {
   return (
@@ -33,7 +34,11 @@ export function CardImage({id, title, description, instructor, createdAt}: Cours
         </CardDescription>
       </CardHeader>
       <CardFooter className="flex-col pb-1">
-        <Button className="w-full bg-amber-500 hover:bg-amber-400 text-black text-[1.2em] cursor-pointer">Acessar Curso</Button>
+        <Link 
+        href={`/courses/${id}`}
+        className="w-full bg-amber-500 hover:opacity-80 text-black text-[1.2em] cursor-pointer text-center rounded py-1">
+          Acessar Curso
+        </Link>
         <div className="mt-2" >
             <p>{instructor.name} {new Date(createdAt).getDate()}/{String(new Date(createdAt).getMonth()+1)}/{new Date(createdAt).getFullYear()}</p>
 

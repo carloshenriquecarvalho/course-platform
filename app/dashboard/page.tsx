@@ -3,10 +3,11 @@ import CourseCardsGroup from "../components/dashboard/components/CourseCardsGrou
 import Header from "../components/dashboard/components/Header";
 
 export default function Dashboard() {
+    
     return (
         <>  
         <div className="flex h-screen w-full overflow-hidden">
-            <aside className="w-64 h-full shrink-0 border-r ">
+            <aside className="w-64 h-full shrink-0 border-r hidden lg:block md:block">
             </aside>
 
             <div className="flex flex-col flex-1 h-full overflow-hidden">

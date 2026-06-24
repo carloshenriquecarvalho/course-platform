@@ -19,3 +19,7 @@ export interface CourseCardProps{
 export interface SearchCourseBarProps {
     onChange: (term: string) => void
 }
+
+export interface CoursePageProps {
+    params: { id: string}
+}
