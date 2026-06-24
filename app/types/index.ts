@@ -15,3 +15,7 @@ export interface CourseCardProps{
     instructor: {id: string, name: string},
     createdAt: Date
 }
+
+export interface SearchCourseBarProps {
+    onChange: (term: string) => void
+}

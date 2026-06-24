@@ -1,38 +1,110 @@
+"use client"
+
+import * as React from "react"
+
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { LoginFormProps } from "../types"
 
-export default function LoginForm({email, password, onEmailChange, onPasswordChange, onSubmit} : LoginFormProps) {
-    return (
-        <>
-            <form
-                className="bg-white w-75 flex flex-col items-center shadow-xl rounded p-4 gap-5   " 
-                onSubmit={(e) =>{
-                e.preventDefault(); 
-                onSubmit();}}>
-                <div className="flex text-center">
-                    <h1 
-                        className="text-2xl font-bold">
-                        Faça login para acessar suas aulas</h1>
-                </div>
-                <div 
-                    className=" flex flex-col items-start w-full gap-2">
-                    <label htmlFor="email" >Digie seu email:</label>
-                    <input 
-                        className="border w-full rounded-2xl py-1 px-2 outline-0"
-                        value={email} onChange={(e) => onEmailChange(e.target.value)} type="email" 
-                        required />
+const spacingOptions = [
+  {
+    className: "[--card-spacing:--spacing(4)]",
+    label: "16px",
+    value: "4",
+  },
+  {
+    className: "[--card-spacing:--spacing(5)]",
+    label: "20px",
+    value: "5",
+  },
+  {
+    className: "[--card-spacing:--spacing(6)]",
+    label: "24px",
+    value: "6",
+  },
+  {
+    className: "[--card-spacing:--spacing(8)]",
+    label: "32px",
+    value: "8",
+  },
+]
 
-                    <label htmlFor="password">Digite sua senha:</label>
-                    <input
-                        className="border w-full rounded-2xl py-1 px-2 outline-0" 
-                        value={password} onChange={(e) => onPasswordChange(e.target.value)} type="password" 
-                        required />
+export function CardSpacing({email, password, onEmailChange, onPasswordChange, onSubmit}: LoginFormProps) {
+  const [spacing, setSpacing] = React.useState("6")
+  const selectedSpacing = spacingOptions.find(
+    (option) => option.value === spacing
+  )
 
-                    <button 
-                        className="bg-amber-500 py-1 px-2 mt-1 w-full cursor-pointer rounded font-semibold hover:bg-amber-400 duration-400 text-black" 
-                        type="submit">Entrar
-                    </button>
+  return (
+    <div className="mx-auto grid w-full max-w-sm gap-4">
+      <Card className={selectedSpacing?.className} 
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit();
+      }}>
+        <CardHeader>
+          <CardTitle>Faça login na para acessar a plataforma</CardTitle>
+          <CardDescription>
+            Coloque seu email e senha fornecidos.
+          </CardDescription>
+          <CardAction>
+            <Button variant="link" className="cursor-pointer">Registre</Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email-spacing">Email</Label>
+                <Input
+                  id="email-spacing"
+                  type="email"
+                  placeholder="m@exemplo.com"
+                  value={email}
+                  onChange={(e) => {
+                    onEmailChange(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password-spacing">Senha</Label>
+                  <a
+                    href="#"
+                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                  >
+                    Esqueceu a senha?
+                  </a>
                 </div>
-            </form>
-        </>
-    )
+                <Input 
+                id="password-spacing" 
+                type="password"
+                value={password}
+                onChange={(e) => {
+                    onPasswordChange(e.target.value);
+                }}
+                required />
+              </div>
+            </div>
+          </form>
+        </CardContent>
+        <CardFooter className="flex-col gap-2">
+          <Button type="submit" className="w-full bg-amber-500 hover:bg-amber-400 duration-400 cursor-pointer text-black">
+            Login
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
+  )
 }

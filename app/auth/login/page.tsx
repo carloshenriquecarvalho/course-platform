@@ -1,8 +1,7 @@
 'use client'
-import LoginForm from "@/app/components/LoginForm";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
-import { CardSpacing } from "@/app/components/LoginForm(1)";
+import { CardSpacing } from "@/app/components/LoginForm";
 
 
 export default function LoginPage() {
@@ -31,7 +30,13 @@ export default function LoginPage() {
 
     return (
         <main className="flex items-center w-full h-screen justify-center bg-gray-100">
-            <CardSpacing></CardSpacing>
+            <CardSpacing
+                email={email}
+                password={password}
+                onEmailChange={setEmail}
+                onPasswordChange={setPassword}
+                onSubmit={handleLogin}
+                ></CardSpacing>
         </main>
     )
     

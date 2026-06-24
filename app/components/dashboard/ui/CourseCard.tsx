@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge"
-import { CourseCardProps } from "../types"
+import { CourseCardProps } from "../../../types"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import {
@@ -20,6 +20,7 @@ export function CardImage({id, title, description, instructor, createdAt}: Cours
         alt="Course Banner Image"
         width={400}
         height={100}
+        loading="eager"
         className="relative z-20 aspect-video w-full "
       />
       <CardHeader>
@@ -33,7 +34,7 @@ export function CardImage({id, title, description, instructor, createdAt}: Cours
       </CardHeader>
       <CardFooter className="flex-col pb-1">
         <Button className="w-full bg-amber-500 hover:bg-amber-400 text-black text-[1.2em] cursor-pointer">Acessar Curso</Button>
-        <div className="bg-red-200 mt-2" >
+        <div className="mt-2" >
             <p>{instructor.name} {new Date(createdAt).getDate()}/{String(new Date(createdAt).getMonth()+1)}/{new Date(createdAt).getFullYear()}</p>
 
         </div>
