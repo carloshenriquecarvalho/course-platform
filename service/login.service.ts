@@ -20,8 +20,8 @@ export class LoginService {
         if(!passwordValidate){
             throw new BadRequestError("Credenciais inválidas");
         }
-        
-        return await this.tokenSign.signToken(user.id, user.role);
+        const { token, role } = await this.tokenSign.signToken(user.id, user.role);
+        return {token, role};
 
     }
 }

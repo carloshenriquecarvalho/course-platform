@@ -45,9 +45,12 @@ export class LessonRepository {
         })
     }
 
-    async verifyIfSameOrderExists(order: number) {
+    async verifyIfSameOrderExists(order: number, moduleId: string) {
         return prisma.lesson.findFirst({
-            where: {order}
+            where: {
+                order: order,
+                moduleId: moduleId
+            }
         })
     }
 

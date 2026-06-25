@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Eye, EyeOff, LogIn, Mail, Lock } from "lucide-react"
 import { LoginFormProps } from "../types"
+import Image from "next/image"
 
 export function CardSpacing({ email, password, onEmailChange, onPasswordChange, onSubmit }: LoginFormProps) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -11,16 +12,17 @@ export function CardSpacing({ email, password, onEmailChange, onPasswordChange, 
     <div className="w-full max-w-md animate-slideUp">
       {/* Logo / Branding */}
       <div className="text-center mb-10">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl gold-gradient mb-5 shadow-lg"
+        <div className="inline-flex items-center justify-center w-30 h-30 rounded-2xl gold-gradient mb-5 shadow-lg overflow-hidden hover:scale-101 duration-500"
           style={{ boxShadow: "0 8px 32px oklch(0.72 0.15 85 / 0.3)" }}>
-          <span className="text-black font-heading font-bold text-2xl">P</span>
+            <Image
+            className="hover:scale-101 duration-500"
+            src={"/logo-pimenta1.png"}
+            width={200}
+            height={200}
+            loading="eager"
+            alt="Logo da Pimenta Estética"
+            ></Image>
         </div>
-        <h1 className="font-heading text-3xl font-semibold text-white">
-          Pimenta Estética
-        </h1>
-        <p className="text-white/40 text-sm mt-1 tracking-wide">
-          Plataforma de Cursos
-        </p>
       </div>
 
       {/* Card */}

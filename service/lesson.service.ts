@@ -28,9 +28,18 @@ export class LessonService{
             throw new BadRequestError("Dados obrigatórios não informados");
         }
 
-        const existingLesson = await this.lessonRepository.verifyIfSameOrderExists(data.order);
+        if (user.role === "INSTRUCTOR") {
+            const lessonModule = await this.moduleRepository.findById(data.moduleId);
+            if (!lessonModule) throw new NotFoundError("Módulo não encontrado");
+            const course = await this.courseRepository.findById(lessonModule.courseId);
+            if (!course || course.instructorId !== user.sub) {
+                throw new ForbiddenError("Você não tem permissão para criar aulas neste curso");
+            }
+        }
+
+        const existingLesson = await this.lessonRepository.verifyIfSameOrderExists(data.order, data.moduleId);
         if(existingLesson) {
-            throw new ConflictError("A aula não pode ter mesma posição que outra aula")
+            throw new ConflictError("A aula não pode ter mesma posição que outra aula neste módulo")
         }
         const lesson = await this.lessonRepository.create(data);
 
@@ -55,6 +64,15 @@ export class LessonService{
             throw new NotFoundError("Aula não encontrada")
         }
 
+        if (user.role === "INSTRUCTOR") {
+            const lessonModule = await this.moduleRepository.findById(existingLesson.moduleId);
+            if (!lessonModule) throw new NotFoundError("Módulo não encontrado");
+            const course = await this.courseRepository.findById(lessonModule.courseId);
+            if (!course || course.instructorId !== user.sub) {
+                throw new ForbiddenError("Você não tem permissão para deletar esta aula");
+            }
+        }
+
         const lesson = await this.lessonRepository.delete(id);
 
         return lesson;
@@ -70,6 +88,15 @@ export class LessonService{
 
         if(!existingLesson) {
             throw new NotFoundError("Lição não encontrada");
+        }
+
+        if (user.role === "INSTRUCTOR") {
+            const lessonModule = await this.moduleRepository.findById(existingLesson.moduleId);
+            if (!lessonModule) throw new NotFoundError("Módulo não encontrado");
+            const course = await this.courseRepository.findById(lessonModule.courseId);
+            if (!course || course.instructorId !== user.sub) {
+                throw new ForbiddenError("Você não tem permissão para editar esta aula");
+            }
         }
 
         const updatedLesson = await this.lessonRepository.update(id, lesson);
@@ -97,9 +124,14 @@ export class LessonService{
             throw new NotFoundError("Curso não encontrado");
         }
 
-        const isUserAlreadyEnrolled = await this.enrollmentRepository.findEnrollment(lessonCourse.id, user.sub);
-        if(!isUserAlreadyEnrolled) {
-            throw new ForbiddenError("Você não está matriculado neste curso");
+        const isAdmin = user.role === "ADMIN";
+        const isInstructor = user.role === "INSTRUCTOR" && lessonCourse.instructorId === user.sub;
+
+        if (!isAdmin && !isInstructor) {
+            const isUserAlreadyEnrolled = await this.enrollmentRepository.findEnrollment(lessonCourse.id, user.sub);
+            if(!isUserAlreadyEnrolled) {
+                throw new ForbiddenError("Você não está matriculado neste curso");
+            }
         }
 
         const lesson = await this.lessonRepository.findLessonAndCourseAndModuleById(id);

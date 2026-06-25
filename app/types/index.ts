@@ -14,7 +14,11 @@ export interface CourseCardProps{
     description: string,
     instructor: {id: string, name: string},
     createdAt: Date,
-    progress?: number
+    progress?: number,
+    status?: "DRAFT" | "PUBLISHED" | "ARCHIVED",
+    canDelete?: boolean,
+    onDelete?: (id: string) => void,
+    onEdit?: (id: string) => void
 }
 
 export interface Attachment {
@@ -53,6 +57,7 @@ export interface Course {
     id: string,
     title: string,
     description: string,
+    status: "DRAFT" | "PUBLISHED" | "ARCHIVED",
     instructor: {id: string, name: string},
     createdAt: Date,
     modules: Modules[]

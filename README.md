@@ -1,124 +1,82 @@
-# Course Platform
+# 🚀 Course Platform SaaS LMS
 
-Plataforma de cursos online desenvolvida com Next.js, TypeScript, Prisma e PostgreSQL (Supabase).
+Bem-vindo à **Course Platform**, um LMS (Learning Management System) de ponta, desenvolvido com foco em performance, segurança e uma interface absolutamente limpa. 
 
-## Sobre o Projeto
+Este projeto não é apenas mais um protótipo; é uma fundação sólida construída do zero. **Toda a arquitetura de backend, modelagem de banco de dados relacional e lógica de negócios foi meticulosamente projetada e codificada pelo criador do projeto**, suportada por inteligência artificial e intensas pesquisas, resultando em um sistema robusto e pronto para escalar. O frontend, idealizado e iniciado também pelo autor, evoluiu para um padrão de design de altíssimo nível, com interações fluidas, arquitetura limpa e estética moderna.
 
-O objetivo deste projeto é fornecer uma plataforma completa para disponibilização e gerenciamento de cursos online, incluindo autenticação de usuários, controle de acesso por perfil, gerenciamento de matrículas e integração com provedores de pagamento.
+## O que Torna este Projeto Interessante?
 
-A plataforma está sendo construída com foco em escalabilidade, segurança e boas práticas de desenvolvimento de software.
+* **Backend Robusto:** Banco de dados modelado de forma inteligente com PostgreSQL (via Supabase) e ORM Prisma. A arquitetura segue rigorosamente os padrões de `Services`, `Repositories` e `DTOs` para garantir código limpo, testável e manutenível.
+* **Sistema de Cargos Blindado:** Proteção estrita de rotas e ações no core da API. Administradores têm controle total, Instrutores dominam apenas o que criam (barreiras de segurança ativas), e Alunos têm uma experiência imersiva sem esbarrar em áreas restritas.
+* **CMS Completo e Dinâmico:** O painel de controle permite criar, editar e organizar Cursos, Módulos e Aulas em uma interface inteligente que lida com dados em tempo real.
+* **Design:** UI/UX focada em retenção. Efeitos *glassmorphism*, dark mode nativo, paleta `gold-gradient`, animações fluidas e badges dinâmicos para controle de status.
+* **Player Integrado:** A sala de aula virtual já é uma realidade, projetada para entregar o conteúdo educacional com foco e zero distrações.
 
-## Tecnologias Utilizadas
+## 🛠️ Stack
 
-* Next.js
-* TypeScript
-* Prisma ORM
-* PostgreSQL
-* Supabase
-* Auth.js (planejado)
-* Kiwify Webhooks (planejado)
+A plataforma utiliza um ecossistema moderno:
 
-## Funcionalidades
+* **Frontend:** Next.js 15, React 19, TailwindCSS, Lucide Icons, Shadcn.
+* **Backend:** Next.js API Routes Node.js.
+* **Banco de Dados:** PostgreSQL hospedado no Supabase.
+* **ORM:** Prisma com tipagem forte de ponta a ponta gerada automaticamente.
+* **Autenticação:** JWT (com middleware dividido em cada rota) nativo interceptando requisições.
+* **Lógica Avançada:** Controle de estado reativo, hooks customizados (`useFetchData`, `useAuth`) e proteção pesada contra race conditions.
 
-### Implementadas
+## 🎯 Status Atual:
 
-* Estrutura inicial do projeto
-* Integração com PostgreSQL via Supabase
-* ORM Prisma configurado
-* CRUD básico de usuários
-* Arquitetura baseada em Services, Repositories e DTOs
+A lista de tarefas concluídas fala por si só. O que já está rodando perfeitamente:
 
-### Em Desenvolvimento
+- [x] Modelagem do banco relacional completo (Usuários, Cursos, Módulos, Aulas, Matrículas, Progresso e Anexos).
+- [x] Arquitetura de Backend modular (Controllers nas rotas, Services cuidando da regra de negócio, Repositories lidando com o Prisma).
+- [x] Autenticação e Segurança via JWT.
+- [x] Dashboard dinâmico baseado no cargo do usuário (Admin vê tudo, Instrutor vê o dele, Aluno vê matriculados).
+- [x] CMS Completo (Criação e Edição unificada de Cursos + Módulos + Aulas com validações rigorosas).
+- [x] Player de Aulas e Estrutura da Sala do Aluno iniciados.
+- [x] Regras estritas de propriedade (Validação de autoria antes de operações destrutivas como DELETE ou PATCH).
 
-* Autenticação e autorização
-* Controle de permissões por perfil (Admin, Instructor e User)
-* Área do aluno
-* Área administrativa
-* Gerenciamento de cursos
-* Gerenciamento de aulas
-* Matrículas automáticas
-* Integração com Kiwify
-* Envio de e-mails automáticos
-* Recuperação de senha
+### Próximos Passos
 
-## Arquitetura
+O que falta adicionar:
 
-```text
-Route
- ↓
-Service
- ↓
-Repository
- ↓
-Prisma
- ↓
-PostgreSQL (Supabase)
-```
+- [ ] Plugar o tracking de conclusão de aulas, "Marcar como assistida" comunicando com a tabela `LessonProgress`.
+- [ ] Integração com sistema de armazenamento em nuvem para os vídeos e imagens reais das capas.
+- [ ] Conexão de Webhooks do Kiwify para automação de matrículas instantâneas via pagamento aprovado.
+- [ ] Sistema automático de envio de E-mails e Redefinição de Senha.
 
-## Estrutura do Projeto
+## 🚀 Como Rodar Localmente
 
-```text
-app/
-├── api/
+1. **Clone o repositório:**
+   ```bash
+   git clone <repository-url>
+   ```
 
-lib/
-├── prisma.ts
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-mappers/
+3. **Configure as chaves da nave:**
+   Crie um arquivo `.env` na raiz e adicione as variáveis críticas:
+   ```env
+   DATABASE_URL="sua url"
 
-repository/
+   SUPABASE_URL="sua url"
+   SUPABASE_SERVICE_ROLE_KEY="sua chave"
 
-service/
+   JWT_SECRET_KEY="seu secret key"
+   ```
 
-types/
+4. **Sincronize o Banco de Dados:**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
 
-prisma/
-```
+5. **Inicie:**
+   ```bash
+   npm run dev
+   ```
 
-## Configuração do Ambiente
-
-Clone o repositório:
-
-```bash
-git clone <repository-url>
-```
-
-Instale as dependências:
-
-```bash
-npm install
-```
-
-Configure as variáveis de ambiente:
-
-```env
-DATABASE_URL=
-```
-
-Execute as migrations:
-
-```bash
-npx prisma migrate dev
-```
-
-Inicie a aplicação:
-
-```bash
-npm run dev
-```
-
-## Roadmap
-
-* [ ] Sistema de autenticação
-* [ ] Área do aluno
-* [ ] Área administrativa
-* [ ] Cadastro de cursos
-* [ ] Upload de conteúdo
-* [ ] Integração com Kiwify
-* [ ] Sistema de matrículas
-* [ ] Sistema de notificações por e-mail
-* [ ] Dashboard de métricas
-
-## Licença
-
-Este projeto está em desenvolvimento.
+---
+*Construído com suor, pesquisa, dedicação e empenho.*

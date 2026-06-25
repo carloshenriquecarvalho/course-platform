@@ -1,14 +1,14 @@
 'use client'
-import { Suspense, useEffect, useState } from "react";
-import CourseCardsGroup from "../components/dashboard/components/CourseCardsGroup";
-import Header from "../components/dashboard/components/Header";
-import Sidebar from "../components/dashboard/ui/Sidebar";
-import { useAuth } from "../hooks/useAuth";
 
-export default function Dashboard() {
+import { Suspense, useState, useEffect } from "react";
+import { useAuth } from "@/app/hooks/useAuth";
+import Sidebar from "@/app/components/dashboard/ui/Sidebar";
+import Header from "@/app/components/dashboard/components/Header";
+import CreateCourseForm from "@/app/components/dashboard/components/create-course/CreateCourseForm";
+
+export default function CreateCoursePage() {
     useAuth();
 
-    // Fix hydration mismatch by waiting for mount
     const [isMounted, setIsMounted] = useState(false);
     const [isUserAdmin, setIsUserAdmin] = useState(false);
 
@@ -22,36 +22,36 @@ export default function Dashboard() {
     }, []);
 
     if (!isMounted) return null;
+
     return (
         <div className="flex h-screen w-full overflow-hidden bg-background">
+            {/* Sidebar */}
             <div className="hidden md:flex">
                 <Sidebar isUserAdmin={isUserAdmin} />
             </div>
+
+            {/* Main area */}
             <div className="flex flex-col flex-1 h-full overflow-hidden">
                 <Suspense fallback={
                     <div className="h-16 w-full shrink-0 border-b border-white/5 bg-sidebar/80" />
                 }>
                     <Header />
                 </Suspense>
+
                 <main className="flex-1 overflow-y-auto p-6 scrollbar-thin">
                     {/* Page heading */}
-                    <div className="mb-8">
+                    <div className="mb-8 max-w-2xl mx-auto">
                         <h1 className="font-heading text-2xl font-semibold text-white">
-                            Meus Cursos
+                            Novo Curso
                         </h1>
                         <p className="text-sm text-white/40 mt-1">
-                            Continue de onde parou
+                            Preencha as informações do curso, módulos e aulas passo a passo.
                         </p>
                     </div>
-                    <Suspense fallback={
-                        <div className="flex items-center justify-center py-20">
-                            <div className="w-6 h-6 rounded-full border-2 border-amber-400/30 border-t-amber-400 animate-spin" />
-                        </div>
-                    }>
-                        <CourseCardsGroup />
-                    </Suspense>
+
+                    <CreateCourseForm />
                 </main>
             </div>
         </div>
-    )
+    );
 }

@@ -12,7 +12,7 @@ export class JWTService {
             expiresIn: "2d"
         });
 
-        return token;
+        return {token, role};
     }
 
     async verifyToken(token: string): Promise<TokenPayload>{

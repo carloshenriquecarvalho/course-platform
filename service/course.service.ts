@@ -15,7 +15,12 @@ export class CourseService{
     async createCourse(createCourse: CourseRequestDTO, user: TokenPayload){
         requireRole(user, ["ADMIN", "INSTRUCTOR"]);
 
-        const createdCourse = await this.courseRepository.create(createCourse, user.sub);
+        let instructorId = user.sub;
+        if (user.role === "ADMIN" && createCourse.instructorId) {
+            instructorId = createCourse.instructorId;
+        }
+
+        const createdCourse = await this.courseRepository.create(createCourse, instructorId);
 
         return createdCourse;
     }
@@ -24,6 +29,10 @@ export class CourseService{
         const courses = await this.courseRepository.getAll();
 
         return courses;
+    }
+
+    async getDashboardCourses(user: TokenPayload) {
+        return this.courseRepository.findDashboardCourses(user.role, user.sub);
     }
 
     async updateCourse(courseId: string, course: CourseUpdateRequestDTO, user: TokenPayload){
@@ -70,9 +79,14 @@ export class CourseService{
             throw new NotFoundError("Curso não existe")
         }
 
-        const userIsEnrolled = await this.enrollmentRepository.findEnrollment(id, user.sub);
-        if(!userIsEnrolled) {
-            throw new ForbiddenError("Você precisa estar matriculado neste curso para acessá-lo");
+        const isAdmin = user.role === "ADMIN";
+        const isInstructor = user.role === "INSTRUCTOR" && existingCourse.instructorId === user.sub;
+
+        if (!isAdmin && !isInstructor) {
+            const userIsEnrolled = await this.enrollmentRepository.findEnrollment(id, user.sub);
+            if(!userIsEnrolled) {
+                throw new ForbiddenError("Você precisa estar matriculado neste curso para acessá-lo");
+            }
         }
 
         const course = await this.courseRepository.findCourseAndModulesById(id);

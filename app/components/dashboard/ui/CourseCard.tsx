@@ -1,9 +1,9 @@
 import { CourseCardProps } from "../../../types"
 import Image from "next/image"
 import Link from "next/link"
-import { User, Calendar, ArrowRight } from "lucide-react"
+import { User, Calendar, ArrowRight, Trash2, Edit2 } from "lucide-react"
 
-export function CardImage({ id, title, description, instructor, createdAt, progress }: CourseCardProps) {
+export function CardImage({ id, title, description, instructor, createdAt, progress, status = "PUBLISHED", canDelete, onDelete, onEdit }: CourseCardProps) {
   const progressValue = progress ?? 0;
   const formattedDate = new Date(createdAt).toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -15,6 +15,33 @@ export function CardImage({ id, title, description, instructor, createdAt, progr
     <div className="group relative flex flex-col rounded-2xl overflow-hidden border border-white/8 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-amber-400/20 hover:shadow-xl"
       style={{ "--hover-shadow": "0 16px 40px oklch(0 0 0 / 0.5)" } as React.CSSProperties}
     >
+      {/* Action Buttons (absolute positioned) */}
+      {canDelete && (
+          <div className="absolute top-3 left-3 z-30 flex flex-col gap-2">
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (onEdit) onEdit(id);
+                }}
+                className="p-2 rounded-full bg-black/60 text-white/70 hover:text-amber-400 hover:bg-amber-400/20 transition-all border border-transparent hover:border-amber-400/30 backdrop-blur-sm"
+                title="Editar curso"
+            >
+                <Edit2 className="w-4 h-4" />
+            </button>
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (onDelete) onDelete(id);
+                }}
+                className="p-2 rounded-full bg-black/60 text-white/70 hover:text-red-400 hover:bg-red-400/20 transition-all border border-transparent hover:border-red-400/30 backdrop-blur-sm"
+                title="Excluir curso"
+            >
+                <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
+      )}
       {/* Banner */}
       <div className="relative aspect-video overflow-hidden bg-zinc-900 shrink-0">
         <div className="absolute inset-0 z-10 bg-linear-to-t from-black/60 via-transparent to-transparent" />
@@ -28,10 +55,24 @@ export function CardImage({ id, title, description, instructor, createdAt, progr
         />
         {/* Status badge */}
         <div className="absolute top-3 right-3 z-20">
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-amber-400/15 text-amber-400 border border-amber-400/25 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            Publicado
-          </span>
+          {status === "PUBLISHED" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-amber-400/15 text-amber-400 border border-amber-400/25 backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                Publicado
+              </span>
+          )}
+          {status === "DRAFT" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-white/10 text-white/60 border border-white/20 backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                Rascunho
+              </span>
+          )}
+          {status === "ARCHIVED" && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium tracking-wide bg-red-400/15 text-red-400 border border-red-400/25 backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                Arquivado
+              </span>
+          )}
         </div>
       </div>
 

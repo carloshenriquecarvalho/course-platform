@@ -1,14 +1,15 @@
 import { apiHandler } from "@/lib/api-handler";
 import { getAuthenticatedUser } from "@/lib/auth";
-import { EnrollmentService } from "@/service/enrollment.service";
+import { CourseService } from "@/service/course.service";
 
-const enrollmentService = new EnrollmentService();
+const courseService = new CourseService();
+
 export async function GET(request: Request){
     return apiHandler(async () => {
         const user = await getAuthenticatedUser(request);
 
-        const enrolledCourses = await enrollmentService.findEnrolledCoursesByUserId(user);
+        const dashboardCourses = await courseService.getDashboardCourses(user);
 
-        return Response.json(enrolledCourses);
+        return Response.json(dashboardCourses);
     });
 }

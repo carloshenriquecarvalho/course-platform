@@ -14,3 +14,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
         return Response.json(course);
     });
 }
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }>}) {
+    return apiHandler(async () => {
+        const user = await getAuthenticatedUser(request);
+        const { id } = await params;
+
+        const deletedCourse = await courseService.deleteCourse(id, user);
+
+        return Response.json({ success: true, course: deletedCourse });
+    });
+}

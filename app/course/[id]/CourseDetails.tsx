@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/accordion"
 import LoadingSpinner from "@/app/components/ui/LoadingSpinner";
 import EmptyState from "@/app/components/ui/EmptyState";
+import { useAuth } from "@/app/hooks/useAuth";
 
 interface Props {
     id: string;
 }
 
 export default function CourseDetails({ id }: Props) {
+    useAuth();
     const router = useRouter();
     const {
         data: course,

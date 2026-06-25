@@ -21,6 +21,32 @@ export class CourseRepository{
         return prisma.course.findMany();
     }
 
+    async findDashboardCourses(role: string, userId: string) {
+        if (role === "ADMIN") {
+            return prisma.course.findMany({
+                include: { instructor: { select: { id: true, name: true } } }
+            });
+        }
+        if (role === "INSTRUCTOR") {
+            return prisma.course.findMany({
+                where: {
+                    OR: [
+                        { instructorId: userId },
+                        { enrollments: { some: { userId: userId } } }
+                    ]
+                },
+                include: { instructor: { select: { id: true, name: true } } }
+            });
+        }
+        // Default (USER)
+        return prisma.course.findMany({
+            where: {
+                enrollments: { some: { userId: userId } }
+            },
+            include: { instructor: { select: { id: true, name: true } } }
+        });
+    }
+
     async update(id: string, data: CourseUpdateRequestDTO){
         return prisma.course.update({
             where: {id},
@@ -69,6 +95,7 @@ export class CourseRepository{
                                 title: true,
                                 description: true,
                                 duration: true,
+                                videoPath: true,
                                 order: true
                             }
                         }

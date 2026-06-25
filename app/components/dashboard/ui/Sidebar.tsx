@@ -1,15 +1,19 @@
 "use client";
 
-import { BookOpen, LayoutDashboard, LogOut } from "lucide-react";
+import { BookOpen, LogOut, Settings  } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
-const navItems = [
-  {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
-  },
+interface SidebarProps {
+  isUserAdmin: boolean;
+}
+
+export default function Sidebar({isUserAdmin}: SidebarProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const navItems = [
   {
     label: "Meus Cursos",
     href: "/dashboard",
@@ -17,9 +21,16 @@ const navItems = [
   },
 ];
 
-export default function Sidebar() {
-  const pathname = usePathname();
-  const router = useRouter();
+const menuItems = isUserAdmin
+  ? [
+      ...navItems,
+      {
+        label: "Novo Curso",
+        href: "/dashboard/create-course",
+        icon: Settings,
+      },
+    ]
+  : navItems;
 
   function handleLogout() {
     localStorage.removeItem("token");
@@ -31,10 +42,17 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 h-16 border-b border-white/5 shrink-0">
         <div
-          className="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center shrink-0 shadow-md"
+          className="w-12 h-12 rounded-lg gold-gradient flex items-center justify-center shrink-0 shadow-md"
           style={{ boxShadow: "0 4px 12px oklch(0.72 0.15 85 / 0.3)" }}
         >
-          <span className="text-black font-heading font-bold text-sm">P</span>
+          <Image
+            className="hover:scale-101 duration-500"
+            src={"/logo-pimenta1.png"}
+            width={200}
+            height={200}
+            loading="eager"
+            alt="Logo da Pimenta Estética"
+            ></Image>
         </div>
         <div className="overflow-hidden">
           <p className="font-heading font-semibold text-sm text-white truncate leading-tight">
@@ -51,7 +69,7 @@ export default function Sidebar() {
         <p className="text-[10px] font-medium text-white/25 uppercase tracking-widest px-3 mb-3">
           Menu
         </p>
-        {navItems.map((item) => {
+        {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
           return (

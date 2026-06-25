@@ -6,8 +6,8 @@ export async function POST(request: Request){
     return apiHandler(async () => {
         const body = await request.json();
     
-        const token = await loginService.authenticate(body);
-    
-        return Response.json({token: `${token}`});
+        const {token, role} = await loginService.authenticate(body);
+        
+        return Response.json({token: `${token}`, role: `${role}`});
     });
 }
