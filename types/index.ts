@@ -1,4 +1,4 @@
-import { CourseStatus, Role } from "@prisma/client"
+import { CourseStatus, Role } from "@/app/generated/prisma"
 
 export interface UserRequestDTO {
     name: string,
