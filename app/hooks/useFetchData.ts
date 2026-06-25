@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+
 interface FetchDataProps{
     url: string
 }
@@ -29,6 +30,8 @@ export default function useFetchData<T>({url}: FetchDataProps){
             const result = await response.json();
     
             setData(result);
+
+            console.log(result);
     
         } catch (err) {
             setError(err instanceof Error ? err.message : "Erro desconhecido");

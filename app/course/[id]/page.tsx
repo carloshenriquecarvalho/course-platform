@@ -1,11 +1,9 @@
-import CourseDetails from "./courseDetails";
+import CourseDetails from "./CourseDetails";
 
-export default async function CourseDetailsPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export default async function CourseDetailsPage({params,}: {params: Promise<{ id: string }>;}) {
+    const { id } = await params;
 
-  return <CourseDetails id={id} />;
+    return (
+        <CourseDetails id={id} />
+    );
 }

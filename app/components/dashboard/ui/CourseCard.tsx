@@ -1,6 +1,5 @@
 import { Badge } from "@/components/ui/badge"
 import { CourseCardProps } from "../../../types"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import {
   Card,
@@ -35,11 +34,11 @@ export function CardImage({id, title, description, instructor, createdAt}: Cours
       </CardHeader>
       <CardFooter className="flex-col pb-1">
         <Link 
-        href={`/courses/${id}`}
+        href={`/course/${id}`}
         className="w-full bg-amber-500 hover:opacity-80 text-black text-[1.2em] cursor-pointer text-center rounded py-1">
           Acessar Curso
         </Link>
-        <div className="mt-2" >
+        <div className="mt-2">
             <p>{instructor.name} {new Date(createdAt).getDate()}/{String(new Date(createdAt).getMonth()+1)}/{new Date(createdAt).getFullYear()}</p>
 
         </div>

@@ -1,9 +1,8 @@
 'use client'
 import { CardImage } from "../ui/CourseCard"
-import { useState } from "react";
 import { CourseCardProps } from "@/app/types";
 import { useSearchParams } from "next/navigation";
-import useFetchData from "@/app/hook/useFetchData";
+import useFetchData from "@/app/hooks/useFetchData";
 
 export default function CourseCardsGroup(){
     const searchParams = useSearchParams();

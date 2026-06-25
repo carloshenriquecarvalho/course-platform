@@ -16,6 +16,34 @@ export interface CourseCardProps{
     createdAt: Date
 }
 
+export interface Lesson {
+    id: string,
+		title: string,
+		description: string,
+		videoPath: string
+		duration: number,
+		order: number,
+		moduleId: number
+		createdAt: Date
+		updatedAt: Date
+}
+
+export interface Modules {
+    id: string,
+    title: string,
+    order: number,
+    lessons: Lesson[]
+}
+
+export interface Course {
+    id: string,
+    title: string,
+    description: string,
+    instructor: {id: string, name: string},
+    createdAt: Date,
+    modules: Modules[]
+}
+
 export interface SearchCourseBarProps {
     onChange: (term: string) => void
 }
