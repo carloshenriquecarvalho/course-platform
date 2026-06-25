@@ -46,6 +46,12 @@ export class CourseRepository{
         return prisma.course.findUnique({
             where: {id: courseId},
             include: {
+                instructor: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
                 modules: {
                     orderBy: {
                         order: "asc"

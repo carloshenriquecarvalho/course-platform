@@ -17,9 +17,9 @@ export function CardImage({ id, title, description, instructor, createdAt, progr
     >
       {/* Banner */}
       <div className="relative aspect-video overflow-hidden bg-zinc-900 shrink-0">
-        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 z-10 bg-linear-to-t from-black/60 via-transparent to-transparent" />
         <Image
-          src="/course-banner-mock.png"
+          src="/mock-course.png"
           alt={`Capa do curso ${title}`}
           width={400}
           height={225}

@@ -51,6 +51,9 @@ export default function CourseDetails({ id }: Props) {
         );
     }
 
+    console.log(course)
+
+
     const totalLessons = course.modules.reduce(
         (acc, mod) => acc + mod.lessons.length,
         0
@@ -79,7 +82,7 @@ export default function CourseDetails({ id }: Props) {
             {/* Hero banner */}
             <div className="relative w-full aspect-[21/7] overflow-hidden bg-zinc-900">
                 <Image
-                    src="/mock-course-page.png"
+                    src="/mock-course.png"
                     fill
                     sizes="100vw"
                     alt={`Banner do curso ${course.title}`}
@@ -210,7 +213,7 @@ export default function CourseDetails({ id }: Props) {
                         >
                             <div className="space-y-1">
                                 <p className="text-xs text-white/35 uppercase tracking-wider font-medium">Instrutor</p>
-                                <p className="text-sm text-white/80 font-medium">{course.instructor?.name ?? "—"}</p>
+                                <p className="text-sm text-white/80 font-medium">{course.instructor.name ?? "—"}</p>
                             </div>
                             <div className="h-px bg-white/6" />
                             <div className="grid grid-cols-2 gap-3 text-center">

@@ -65,3 +65,8 @@ export interface SearchCourseBarProps {
 export interface CoursePageProps {
     params: { id: string}
 }
+
+export interface Instructor {
+    id: string,
+    name: string
+}
