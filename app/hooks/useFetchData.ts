@@ -29,10 +29,7 @@ export default function useFetchData<T>({url}: FetchDataProps){
     
             const result = await response.json();
     
-            setData(result);
-
-            console.log(result);
-    
+            setData(result);    
         } catch (err) {
             setError(err instanceof Error ? err.message : "Erro desconhecido");
         } finally {

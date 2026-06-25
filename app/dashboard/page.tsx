@@ -16,8 +16,8 @@ export default function Dashboard() {
                 <CourseCardsGroup />
                 </main>
             </div>
-            </div>
-        
+        </div>
+    
         </>
     )
 }
