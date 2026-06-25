@@ -1,4 +1,4 @@
-'use client'
+import { Suspense } from "react";
 import CourseCardsGroup from "../components/dashboard/components/CourseCardsGroup";
 import Header from "../components/dashboard/components/Header";
 import Sidebar from "../components/dashboard/ui/Sidebar";
@@ -14,7 +14,11 @@ export default function Dashboard() {
 
             {/* Main area */}
             <div className="flex flex-col flex-1 h-full overflow-hidden">
-                <Header />
+                <Suspense fallback={
+                    <div className="h-16 w-full shrink-0 border-b border-white/5 bg-sidebar/80" />
+                }>
+                    <Header />
+                </Suspense>
                 <main className="flex-1 overflow-y-auto p-6 scrollbar-thin">
                     {/* Page heading */}
                     <div className="mb-8">
@@ -25,9 +29,15 @@ export default function Dashboard() {
                             Continue de onde parou
                         </p>
                     </div>
-                    <CourseCardsGroup />
+                    <Suspense fallback={
+                        <div className="flex items-center justify-center py-20">
+                            <div className="w-6 h-6 rounded-full border-2 border-amber-400/30 border-t-amber-400 animate-spin" />
+                        </div>
+                    }>
+                        <CourseCardsGroup />
+                    </Suspense>
                 </main>
             </div>
         </div>
     )
-}
+}
