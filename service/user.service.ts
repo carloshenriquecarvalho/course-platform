@@ -2,7 +2,7 @@ import { UserRepository } from "@/repository/user.repository";
 import { TokenPayload, UserRequestDTO } from "@/types";
 import { UserMapper } from "@/mappers/user.mapper";
 import { UserResponseDTO } from "@/types";
-import { User } from "@/app/generated/prisma";
+import { User } from "@/app/generated/prisma/client";
 import bcrypt from "bcryptjs";
 import { requireRole } from "@/lib/authorization";
 import { NotFoundError } from "@/errors/notfound";

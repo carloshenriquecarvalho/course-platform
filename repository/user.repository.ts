@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { AdminUserRequestDTO, UserRequestDTO } from "@/types";
-import { Role } from "@/app/generated/prisma";
+import { Role } from "@/app/generated/prisma/client";
 
 
 export class UserRepository {
