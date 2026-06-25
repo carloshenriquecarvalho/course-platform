@@ -13,6 +13,16 @@ export interface CourseCardProps{
     title: string,
     description: string,
     instructor: {id: string, name: string},
+    createdAt: Date,
+    progress?: number
+}
+
+export interface Attachment {
+    id: string,
+    fileName: string,
+    filePath: string,
+    fileSize?: number,
+    lessonId: string,
     createdAt: Date
 }
 
@@ -27,6 +37,7 @@ export interface Lesson {
 		moduleId: number
 		createdAt: Date
 		updatedAt: Date
+		attachments?: Attachment[]
 }
 
 export interface Modules {
