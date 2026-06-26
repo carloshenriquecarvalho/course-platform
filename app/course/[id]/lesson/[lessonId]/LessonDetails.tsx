@@ -32,17 +32,28 @@ export function LessonDetails({ lessonId }: Props) {
     // ── Completion state ──────────────────────────────────────────────────────
     const storageKey = `lesson-completed-${lessonId}`;
 
-    const [isCompleted, setIsCompleted] = useState(false);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        let isMounted = true;
+        setTimeout(() => {
+            if (isMounted) setMounted(true);
+        }, 0);
+        return () => { isMounted = false; };
+    }, []);
+
+    const [completedInSession, setCompletedInSession] = useState(false);
+    const [prevLessonId, setPrevLessonId] = useState(lessonId);
     const [isCompleting, setIsCompleting] = useState(false);
     const [completionError, setCompletionError] = useState<string | null>(null);
-    const [progressPercent, setProgressPercent] = useState(0);
 
-    // Rehydrate from localStorage when lessonId changes
-    useEffect(() => {
-        const stored = localStorage.getItem(storageKey);
-        setIsCompleted(stored === "true");
+    // Reinicia o estado de sessão quando o lessonId muda
+    if (lessonId !== prevLessonId) {
+        setPrevLessonId(lessonId);
+        setCompletedInSession(false);
         setCompletionError(null);
-    }, [lessonId, storageKey]);
+    }
+
+    const isCompleted = completedInSession || (mounted ? localStorage.getItem(storageKey) === "true" : false);
 
     const handleCompleteLesson = useCallback(async () => {
         if (isCompleted || isCompleting) return;
@@ -64,44 +75,39 @@ export function LessonDetails({ lessonId }: Props) {
                 throw new Error("Não foi possível marcar a aula como concluída.");
             }
 
-            setIsCompleted(true);
+            setCompletedInSession(true);
             localStorage.setItem(storageKey, "true");
-
-            // Recalcula o progresso e persiste para o CourseCard no dashboard
-            if (lesson && courseId) {
-                const mods = lesson.module.course?.modules ?? [];
-                const total = mods.reduce((acc, m) => acc + m.lessons.length, 0);
-                const done = mods.reduce((acc, m) =>
-                    acc + m.lessons.filter((l) =>
-                        localStorage.getItem(`lesson-completed-${l.id}`) === "true"
-                    ).length,
-                0);
-                const newPercent = total > 0 ? Math.round((done / total) * 100) : 0;
-                setProgressPercent(newPercent);
-                localStorage.setItem(`course-progress-${courseId}`, String(newPercent));
-            }
         } catch (err) {
             setCompletionError(err instanceof Error ? err.message : "Erro desconhecido.");
         } finally {
             setIsCompleting(false);
         }
-    }, [lessonId, isCompleted, isCompleting, storageKey, lesson, courseId]);
+    }, [lessonId, isCompleted, isCompleting, storageKey]);
 
-    // Inicializa/atualiza progressPercent sempre que lesson carregar ou isCompleted mudar
-    // Também grava course-progress-{courseId} para o CourseCard no dashboard
-    useEffect(() => {
-        if (!lesson || !courseId) return;
-        const mods = lesson.module.course?.modules ?? [];
-        const total = mods.reduce((acc, m) => acc + m.lessons.length, 0);
-        const done = mods.reduce((acc, m) =>
-            acc + m.lessons.filter((l) =>
-                localStorage.getItem(`lesson-completed-${l.id}`) === "true"
-            ).length,
+    // ── Derived Progress State ────────────────────────────────────────────────
+    const allModules = lesson?.module.course?.modules ?? [];
+    let progressPercent = 0;
+    let completedLessons = 0;
+    let totalLessons = 0;
+
+    if (mounted && lesson) {
+        totalLessons = allModules.reduce((acc, m) => acc + m.lessons.length, 0);
+        completedLessons = allModules.reduce((acc, m) =>
+            acc + m.lessons.filter((l) => {
+                // Se for a aula atual, usamos nosso estado derivado (atualizado instantaneamente sem recarregar o storage)
+                if (l.id === lessonId) return isCompleted;
+                return localStorage.getItem(`lesson-completed-${l.id}`) === "true";
+            }).length,
         0);
-        const percent = total > 0 ? Math.round((done / total) * 100) : 0;
-        setProgressPercent(percent);
-        localStorage.setItem(`course-progress-${courseId}`, String(percent));
-    }, [lesson, lessonId, isCompleted, courseId]);
+        progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+    }
+
+    // Effect to sync progress to localStorage para o dashboard (CourseCard)
+    useEffect(() => {
+        if (mounted && courseId) {
+            localStorage.setItem(`course-progress-${courseId}`, String(progressPercent));
+        }
+    }, [progressPercent, courseId, mounted]);
 
     // ─────────────────────────────────────────────────────────────────────────
 
@@ -131,14 +137,7 @@ export function LessonDetails({ lessonId }: Props) {
 
 
     const currentModule = lesson.module;
-    const allModules = lesson.module.course?.modules ?? [];
     const hasAttachments = lesson.attachments && lesson.attachments.length > 0;
-    const totalLessons = allModules.reduce((acc, m) => acc + m.lessons.length, 0);
-    const completedLessons = allModules.reduce((acc, m) =>
-        acc + m.lessons.filter((l) =>
-            localStorage.getItem(`lesson-completed-${l.id}`) === "true"
-        ).length,
-    0);
 
     function formatFileSize(bytes?: number): string {
         if (!bytes) return "";
