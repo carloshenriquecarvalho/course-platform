@@ -1,10 +1,25 @@
+"use client"
+
 import { CourseCardProps } from "../../../types"
 import Image from "next/image"
 import Link from "next/link"
 import { User, Calendar, ArrowRight, Trash2, Edit2 } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export function CardImage({ id, title, description, instructor, createdAt, progress, status = "PUBLISHED", canDelete, onDelete, onEdit }: CourseCardProps) {
-  const progressValue = progress ?? 0;
+  // Lê o progresso salvo no localStorage (atualizado ao concluir aulas)
+  const [localProgress, setLocalProgress] = useState<number>(progress ?? 0);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(`course-progress-${id}`);
+    if (stored !== null) {
+      setLocalProgress(Number(stored));
+    } else if (progress !== undefined) {
+      setLocalProgress(progress);
+    }
+  }, [id, progress]);
+
+  const progressValue = localProgress;
   const formattedDate = new Date(createdAt).toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "short",

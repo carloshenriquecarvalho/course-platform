@@ -73,7 +73,7 @@ export default function CourseDetails({ id }: Props) {
             {/* Back button */}
             <div className="max-w-5xl mx-auto px-6 pt-6">
                 <button
-                    onClick={() => router.back()}
+                    onClick={() => router.push("/dashboard")}
                     className="flex items-center gap-2 text-sm text-white/40 hover:text-white/80 transition-colors duration-200 mb-6 group"
                 >
                     <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
