@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma"
 import { CourseRequestDTO } from "@/types"
-import { CourseStatus } from "@/app/generated/prisma"
+import { CourseStatus } from "@prisma/client"
 import { CourseUpdateRequestDTO } from "@/types"
 
 export class CourseRepository{
