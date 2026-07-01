@@ -1,4 +1,4 @@
-# Course Platform SaaS LMS
+# Plataforma de Cursos
 
 O sistema é um LMS (Learning Management System), desenvolvido com foco em performance, segurança e uma interface limpa. 
 
@@ -32,7 +32,7 @@ A plataforma utiliza um ecossistema moderno:
 
 A lista de tarefas concluídas fala por si só. O que já está rodando perfeitamente:
 
-- [x] Modelagem do banco relacional completo (Usuários, Cursos, Módulos, Aulas, Matrículas, Progresso e Anexos).
+- [x] Modelagem do banco relacional completo de Usuários, Cursos, Módulos, Aulas, Matrículas, Progresso e Anexos.
 - [x] Arquitetura de Backend modular (Controllers nas rotas, Services cuidando da regra de negócio, Repositories lidando com o Prisma).
 - [x] Autenticação e Segurança via JWT.
 - [x] Dashboard dinâmico baseado no cargo do usuário (Admin vê tudo, Instrutor vê o dele, Aluno vê matriculados).
@@ -44,7 +44,6 @@ A lista de tarefas concluídas fala por si só. O que já está rodando perfeita
 
 O que falta adicionar:
 
-- [ ] Plugar o tracking de conclusão de aulas, "Marcar como assistida" comunicando com a tabela `LessonProgress`.
 - [ ] Integração com sistema de armazenamento em nuvem para os vídeos e imagens reais das capas.
 - [ ] Conexão de Webhooks do Kiwify para automação de matrículas instantâneas via pagamento aprovado.
 - [ ] Sistema automático de envio de E-mails e Redefinição de Senha.
@@ -62,7 +61,7 @@ O que falta adicionar:
    ```
 
 3. **Configure as chaves da nave:**
-   Crie um arquivo `.env` na raiz e adicione as variáveis críticas:
+   Crie um arquivo `.env` na raiz e adicione as variáveis de ambiente:
    ```env
    DATABASE_URL="sua url"
 
@@ -84,4 +83,5 @@ O que falta adicionar:
    ```
 
 ---
-*Construído com suor, pesquisa, dedicação e empenho.*
+
+Construído com suor, pesquisa, dedicação e empenho.
