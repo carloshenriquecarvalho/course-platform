@@ -4,6 +4,11 @@ O sistema é um LMS (Learning Management System), desenvolvido com foco em perfo
 
 Este projeto não é apenas mais um protótipo ou de faculdade. Toda a arquitetura de backend, modelagem de banco de dados relacional e lógica de negócios foi meticulosamente projetada e codificada pelo criador do projeto, suportada por inteligência artificial e intensas pesquisas, resultando em um sistema robusto e pronto para escalar. O frontend, idealizado e iniciado também pelo autor, evoluiu para um padrão de design de alto nível, com interações fluidas, arquitetura limpa e estética moderna.
 
+<img width="1889" height="996" alt="Screenshot 2026-07-01 093222" src="https://github.com/user-attachments/assets/e7e6f6c5-4ec5-4662-8328-c145f476531d" />
+
+<img width="1917" height="991" alt="Screenshot 2026-07-01 093402" src="https://github.com/user-attachments/assets/5fe60791-47bb-4583-aa00-4fcc08f5a177" />
+
+
 ## O que Torna este Projeto Interessante?
 
 * **Backend Robusto:** Banco de dados modelado de forma inteligente com PostgreSQL e ORM Prisma. A arquitetura segue rigorosamente os padrões de `Services`, `Repositories` e `DTOs` para garantir código limpo, testável e manutenível.
